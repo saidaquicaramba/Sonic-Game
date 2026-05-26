@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
-@export var speed = 100.0
+@export var speed = 120.0
 @export var direction = 1
-@export var patrol_distance = 200.0
+@export var patrol_distance = 250.0
 
 var start_position = Vector2.ZERO
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -17,33 +17,37 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
+	# Movimento contínuo
 	velocity.x = speed * direction
 	
-	# Verificar limites de patrulha
+	# Verificar limites de patrulha - inverte suavemente
 	if abs(global_position.x - start_position.x) > patrol_distance:
 		direction *= -1
+		# Corrigir para não ultrapassar limite
+		global_position.x = start_position.x + (patrol_distance * direction)
 	
 	move_and_slide()
 	
-	# Detectar colisão com player com hitbox precisa
+	# Detectar colisão com player
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		
 		if collider and collider.is_in_group("player"):
-			# Verificar se player está acima (15px de margem)
-			var player_top = collider.global_position.y - 24  # Metade da altura do player
-			var enemy_top = global_position.y - 16  # Metade da altura do inimigo
-			var contact_margin = 15
+			# Se player está acima do inimigo E descendo
+			var relative_y = collider.global_position.y - global_position.y
+			var is_above = relative_y < -12  # 12px de margem
+			var is_descending = collider.velocity.y > 0
 			
-			# Se player pulou em cima do inimigo
-			if collider.velocity.y > 0 and player_top < enemy_top - contact_margin:
+			if is_above and is_descending:
+				# Player pisou no inimigo
 				take_damage()
-				collider.velocity.y = -300  # Quique ao matar inimigo
+				collider.velocity.y = -350  # Quique
 			else:
-				# Colisão lateral = dano no player
-				collider.take_damage()
+				# Colisão lateral
+				if not collider.is_invulnerable:
+					collider.take_damage()
 
 func take_damage():
-	print("Inimigo destruído!")
+	print("Inimigo patrulhador destruído!")
 	queue_free()

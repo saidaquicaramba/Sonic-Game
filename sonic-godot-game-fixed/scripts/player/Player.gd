@@ -18,8 +18,9 @@ var is_visible_state = true
 func _ready():
 	set_collision_layer_value(1, true)  # Player layer
 	set_collision_mask_value(2, true)   # Plataformas
-	set_collision_mask_value(3, true)   # Inimigos
+	set_collision_mask_value(3, true)   # Inimigos patrulhadores
 	set_collision_mask_value(4, true)   # Piranhas
+	set_collision_mask_value(5, true)   # Voadores
 	
 	current_lives = max_lives
 	GameManager.set_player(self)
@@ -37,7 +38,7 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction)
 	
-	# Pulo — usa is_on_floor() nativo do CharacterBody2D
+	# Pulo
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_force
 	
@@ -71,7 +72,7 @@ func take_damage():
 		return
 	
 	current_lives -= 1
-	print("Player tomou dano! Vidas: ", current_lives)
+	print("Player tomou dano! Vidas restantes: ", current_lives)
 	
 	if current_lives <= 0:
 		print("GAME OVER!")
