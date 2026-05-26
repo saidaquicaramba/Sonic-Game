@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" uid="uid://player" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://platform" path="res://scenes/platforms/Platform.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://enemy" path="res://scenes/enemies/Enemy.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://levelfinish" path="res://scenes/levels/LevelFinish.tscn" id="4"]
+
+[node name="Level4" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(100, 300)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Platform1" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(180, 400)
+
+[node name="Platform2" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(320, 360)
+
+[node name="Platform3" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(460, 310)
+
+[node name="Platform4" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(600, 260)
+
+[node name="Platform5" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(740, 220)
+
+[node name="Platform6" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(880, 270)
+
+[node name="Platform7" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1020, 330)
+
+[node name="Platform8" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1160, 380)
+
+[node name="Platform_Ground" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(600, 480)
+scale = Vector2(20, 1)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Enemy1" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(300, 300)
+
+[node name="Enemy2" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(550, 200)
+
+[node name="Enemy3" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(800, 150)
+
+[node name="Enemy4" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(1050, 250)
+
+[node name="LevelFinish" parent="." instance=ExtResource("4")]
+position = Vector2(1350, 320)
