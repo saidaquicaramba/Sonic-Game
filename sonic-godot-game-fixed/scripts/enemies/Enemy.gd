@@ -23,8 +23,6 @@ func _physics_process(delta):
 	# Verificar limites de patrulha - inverte suavemente
 	if abs(global_position.x - start_position.x) > patrol_distance:
 		direction *= -1
-		# Corrigir para não ultrapassar limite
-		global_position.x = start_position.x + (patrol_distance * direction)
 	
 	move_and_slide()
 	

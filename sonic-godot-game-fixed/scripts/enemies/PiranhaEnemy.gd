@@ -1,27 +1,36 @@
 extends CharacterBody2D
 
+@export var speed = 0.0  # Sem movimento horizontal
 @export var jump_force = -320.0
 @export var jump_interval = 1.5
-@export var despawn_distance = -100.0
+@export var spawn_y_bottom = 750.0  # Vem de baixo
+@export var despawn_y = -100.0
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var jump_timer = 0.0
-var spawn_x = 0.0
+var start_x = 0.0
+var is_moving_up = false
 
 func _ready():
 	set_collision_layer_value(4, true)  # Piranha layer
 	set_collision_mask_value(2, true)   # Plataformas
 	set_collision_mask_value(1, true)   # Player
 	
-	spawn_x = global_position.x
+	start_x = global_position.x
 	jump_timer = randf_range(0.3, jump_interval)
 
 func _physics_process(delta):
-	# Aplicar gravidade
+	# Verificar se está subindo (velocidade negativa = subindo)
+	if velocity.y < 0:
+		is_moving_up = true
+	elif velocity.y > 0:
+		is_moving_up = false
+	
+	# Aplicar gravidade normalmente
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	# SEM movimento horizontal - apenas vertical!
+	# SEM movimento horizontal
 	velocity.x = 0
 	
 	# Sistema de pulo automático
@@ -32,8 +41,8 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-	# Despawnar se saiu da tela
-	if global_position.x < despawn_distance:
+	# Despawnar se subiu demais (saiu pela tela de cima)
+	if global_position.y < despawn_y:
 		queue_free()
 	
 	# Detectar colisão com player

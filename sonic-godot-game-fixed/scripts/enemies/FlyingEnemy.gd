@@ -17,6 +17,8 @@ func _ready():
 
 func _physics_process(delta):
 	# SEM gravidade - voa!
+	# Reseta velocity.y para calcular novo
+	velocity.y = 0
 	
 	# Movimento horizontal
 	velocity.x = speed * direction
@@ -25,24 +27,18 @@ func _physics_process(delta):
 	float_timer += delta * float_speed
 	velocity.y = sin(float_timer) * float_amplitude
 	
-	# Atualizar posição
-	global_position += velocity * delta
+	# Aplicar movimento
+	move_and_slide()
 	
 	# Verificar limites de patrulha
 	if abs(global_position.x - start_position.x) > patrol_distance:
 		direction *= -1
-		global_position.x = start_position.x + (patrol_distance * direction)
 	
-	# Detectar colisão com player (sem move_and_slide, usa raycast)
-	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsShapeQueryParameters2D.new()
-	query.shape = $CollisionShape2D.shape
-	query.transform = global_transform
-	query.collision_mask = 1  # Apenas player
-	
-	var result = space_state.intersect_shape(query)
-	for collision_obj in result:
-		var collider = collision_obj.collider
+	# Detectar colisão com player
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
 		if collider and collider.is_in_group("player"):
 			if not collider.is_invulnerable:
 				collider.take_damage()
