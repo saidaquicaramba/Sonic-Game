@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" uid="uid://player" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://platform" path="res://scenes/platforms/Platform.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://enemy" path="res://scenes/enemies/Enemy.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://levelfinish" path="res://scenes/levels/LevelFinish.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://piranha" path="res://scenes/enemies/PiranhaEnemy.tscn" id="5"]
 
 [node name="Level1" type="Node2D"]
 
@@ -16,28 +17,46 @@ position = Vector2(100, 300)
 position = Vector2(200, 400)
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(400, 350)
+position = Vector2(350, 350)
 
 [node name="Platform3" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(600, 300)
+position = Vector2(500, 300)
 
 [node name="Platform4" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(800, 280)
+position = Vector2(650, 350)
 
 [node name="Platform5" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1000, 320)
+position = Vector2(800, 280)
+
+[node name="Platform6" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(950, 320)
+
+[node name="Platform7" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1100, 300)
+
+[node name="Platform8" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1250, 350)
+
+[node name="Platform9" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1400, 320)
 
 [node name="Platform_Ground" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(500, 480)
-scale = Vector2(15, 1)
+position = Vector2(700, 480)
+scale = Vector2(20, 1)
 
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Enemy1" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(300, 350)
+position = Vector2(350, 320)
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("3")]
 position = Vector2(700, 250)
 
+[node name="Enemy3" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(1100, 270)
+
+[node name="PiranhaEnemy1" parent="Enemies" instance=ExtResource("5")]
+position = Vector2(1400, 250)
+
 [node name="LevelFinish" parent="." instance=ExtResource("4")]
-position = Vector2(1200, 320)
+position = Vector2(1550, 320)

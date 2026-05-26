@@ -16,26 +16,34 @@ func _ready():
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
-
+	
 	velocity.x = speed * direction
-
+	
 	# Verificar limites de patrulha
 	if abs(global_position.x - start_position.x) > patrol_distance:
 		direction *= -1
-
+	
 	move_and_slide()
-
-	# Detectar colisão com player via slide
+	
+	# Detectar colisão com player com hitbox precisa
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
+		
 		if collider and collider.is_in_group("player"):
-			# Player pulou em cima do inimigo?
-			if collider.velocity.y > 0 and collider.global_position.y < global_position.y - 10:
+			# Verificar se player está acima (15px de margem)
+			var player_top = collider.global_position.y - 24  # Metade da altura do player
+			var enemy_top = global_position.y - 16  # Metade da altura do inimigo
+			var contact_margin = 15
+			
+			# Se player pulou em cima do inimigo
+			if collider.velocity.y > 0 and player_top < enemy_top - contact_margin:
 				take_damage()
 				collider.velocity.y = -300  # Quique ao matar inimigo
 			else:
+				# Colisão lateral = dano no player
 				collider.take_damage()
 
 func take_damage():
+	print("Inimigo destruído!")
 	queue_free()

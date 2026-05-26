@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" uid="uid://player" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://platform" path="res://scenes/platforms/Platform.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://enemy" path="res://scenes/enemies/Enemy.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://levelfinish" path="res://scenes/levels/LevelFinish.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://piranha" path="res://scenes/enemies/PiranhaEnemy.tscn" id="5"]
 
 [node name="Level3" type="Node2D"]
 
@@ -33,9 +34,15 @@ position = Vector2(950, 300)
 [node name="Platform7" parent="Platforms" instance=ExtResource("2")]
 position = Vector2(1100, 350)
 
+[node name="Platform8" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1250, 310)
+
+[node name="Platform9" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1400, 270)
+
 [node name="Platform_Ground" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(500, 480)
-scale = Vector2(15, 1)
+position = Vector2(700, 480)
+scale = Vector2(20, 1)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -51,5 +58,11 @@ position = Vector2(1000, 250)
 [node name="Enemy4" parent="Enemies" instance=ExtResource("3")]
 position = Vector2(550, 100)
 
+[node name="Enemy5" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(1250, 280)
+
+[node name="PiranhaEnemy1" parent="Enemies" instance=ExtResource("5")]
+position = Vector2(1550, 200)
+
 [node name="LevelFinish" parent="." instance=ExtResource("4")]
-position = Vector2(1200, 320)
+position = Vector2(1600, 270)
