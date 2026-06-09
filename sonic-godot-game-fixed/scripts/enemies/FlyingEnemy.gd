@@ -1,13 +1,14 @@
 extends CharacterBody2D
 
-@export var speed = 140.0
+@export var speed = 150.0
 @export var direction = 1
 @export var patrol_distance = 300.0
-@export var float_amplitude = 20.0
-@export var float_speed = 2.0
+@export var float_amplitude = 25.0
+@export var float_speed = 3.0
 
 var start_position = Vector2.ZERO
 var float_timer = 0.0
+var direction_locked = false
 
 func _ready():
 	set_collision_layer_value(5, true)  # Flying Enemy layer
@@ -17,11 +18,19 @@ func _ready():
 
 func _physics_process(delta):
 	# SEM gravidade - voa!
-	# Reseta velocity.y para calcular novo
 	velocity.y = 0
 	
-	# Movimento horizontal
+	# Movimento horizontal com lock para evitar vibração
 	velocity.x = speed * direction
+	
+	# Verificar limites de patrulha
+	if not direction_locked:
+		if abs(global_position.x - start_position.x) >= patrol_distance:
+			direction *= -1
+			direction_locked = true
+	else:
+		if abs(global_position.x - start_position.x) < patrol_distance - 20:
+			direction_locked = false
 	
 	# Movimento vertical flutuante (onda suave)
 	float_timer += delta * float_speed
@@ -29,10 +38,6 @@ func _physics_process(delta):
 	
 	# Aplicar movimento
 	move_and_slide()
-	
-	# Verificar limites de patrulha
-	if abs(global_position.x - start_position.x) > patrol_distance:
-		direction *= -1
 	
 	# Detectar colisão com player
 	for i in get_slide_collision_count():

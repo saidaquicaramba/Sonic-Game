@@ -6,6 +6,7 @@ extends CharacterBody2D
 
 var start_position = Vector2.ZERO
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var direction_locked = false
 
 func _ready():
 	set_collision_layer_value(3, true)  # Enemy layer
@@ -20,9 +21,15 @@ func _physics_process(delta):
 	# Movimento contínuo
 	velocity.x = speed * direction
 	
-	# Verificar limites de patrulha - inverte suavemente
-	if abs(global_position.x - start_position.x) > patrol_distance:
-		direction *= -1
+	# Verificar se atingiu o limite e inverter
+	if not direction_locked:
+		if abs(global_position.x - start_position.x) >= patrol_distance:
+			direction *= -1
+			direction_locked = true
+	else:
+		# Esperar até se afastar um pouco antes de permitir novo flip
+		if abs(global_position.x - start_position.x) < patrol_distance - 20:
+			direction_locked = false
 	
 	move_and_slide()
 	
