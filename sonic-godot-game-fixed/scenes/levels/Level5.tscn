@@ -1,92 +1,169 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="PackedScene" uid="uid://player" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://platform" path="res://scenes/platforms/Platform.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://enemy" path="res://scenes/enemies/Enemy.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://levelfinish" path="res://scenes/levels/LevelFinish.tscn" id="4"]
-[ext_resource type="PackedScene" uid="uid://flying" path="res://scenes/enemies/FlyingEnemy.tscn" id="5"]
 
 [node name="Level5" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1")]
-position = Vector2(100, 300)
+position = Vector2(2000, 3000)
 
 [node name="Platforms" type="Node2D" parent="."]
 
+[node name="Platform_Ground" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2000, 3100)
+scale = Vector2(150, 1)
+
 [node name="Platform1" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(200, 1700)
+position = Vector2(1500, 2900)
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(400, 1600)
+position = Vector2(1200, 2750)
 
 [node name="Platform3" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(600, 1450)
+position = Vector2(1000, 2550)
 
 [node name="Platform4" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(800, 1250)
+position = Vector2(900, 2350)
 
 [node name="Platform5" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1000, 900)
+position = Vector2(1000, 2150)
 
 [node name="Platform6" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1200, 550)
+position = Vector2(1200, 2000)
 
 [node name="Platform7" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1400, 350)
+position = Vector2(1500, 1900)
 
 [node name="Platform8" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1600, 550)
+position = Vector2(1900, 1850)
 
 [node name="Platform9" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1800, 850)
+position = Vector2(2300, 1900)
 
 [node name="Platform10" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(2000, 1200)
+position = Vector2(2600, 2000)
 
 [node name="Platform11" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(2200, 1450)
+position = Vector2(2800, 2150)
 
 [node name="Platform12" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(2400, 1650)
+position = Vector2(2900, 2350)
 
-[node name="Platform_Ground" parent="Platforms" instance=ExtResource("2")]
-position = Vector2(1300, 1920)
-scale = Vector2(60, 1)
+[node name="Platform13" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2800, 2550)
+
+[node name="Platform14" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2600, 2750)
+
+[node name="Platform15" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2300, 2900)
+
+[node name="Platform16" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2000, 2950)
+
+[node name="Platform17" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1200, 1700)
+
+[node name="Platform18" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1500, 1500)
+
+[node name="Platform19" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1900, 1350)
+
+[node name="Platform20" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2300, 1400)
+
+[node name="Platform21" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2600, 1600)
+
+[node name="Platform22" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2900, 1800)
+
+[node name="Platform23" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3100, 2100)
+
+[node name="Platform24" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3200, 2400)
+
+[node name="Platform25" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3100, 2700)
+
+[node name="Platform26" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2850, 2950)
+
+[node name="Platform27" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(1900, 1050)
+
+[node name="Platform28" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2300, 900)
+
+[node name="Platform29" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2700, 950)
+
+[node name="Platform30" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3100, 1250)
+
+[node name="Platform31" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3400, 1600)
+
+[node name="Platform32" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3600, 2000)
+
+[node name="Platform33" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3650, 2400)
+
+[node name="Platform34" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3400, 2700)
+
+[node name="Platform35" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(2800, 300)
+
+[node name="Platform36" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3000, 200)
+
+[node name="Platform37" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3300, 300)
+
+[node name="Platform38" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3500, 500)
+
+[node name="Platform39" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(3600, 800)
 
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Enemy1" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(400, 1550)
+position = Vector2(1200, 2700)
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(800, 1200)
+position = Vector2(900, 2300)
 
 [node name="Enemy3" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(1200, 500)
+position = Vector2(1200, 1650)
 
 [node name="Enemy4" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(1600, 500)
+position = Vector2(1900, 1300)
 
 [node name="Enemy5" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(2000, 1150)
+position = Vector2(2600, 1550)
 
 [node name="Enemy6" parent="Enemies" instance=ExtResource("3")]
-position = Vector2(2400, 1550)
+position = Vector2(2900, 1750)
 
-[node name="FlyingEnemy1" parent="Enemies" instance=ExtResource("5")]
-position = Vector2(1000, 800)
+[node name="Enemy7" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(3200, 1400)
 
-[node name="FlyingEnemy2" parent="Enemies" instance=ExtResource("5")]
-position = Vector2(1400, 350)
+[node name="Enemy8" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(3500, 1850)
 
-[node name="FlyingEnemy3" parent="Enemies" instance=ExtResource("5")]
-position = Vector2(1800, 650)
+[node name="Enemy9" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(3000, 800)
 
-[node name="FlyingEnemy4" parent="Enemies" instance=ExtResource("5")]
-position = Vector2(2200, 1200)
-
-[node name="FlyingEnemy5" parent="Enemies" instance=ExtResource("5")]
-position = Vector2(2600, 1300)
+[node name="Enemy10" parent="Enemies" instance=ExtResource("3")]
+position = Vector2(3400, 600)
 
 [node name="LevelFinish" parent="." instance=ExtResource("4")]
-position = Vector2(2700, 1550)
+position = Vector2(3700, 400)

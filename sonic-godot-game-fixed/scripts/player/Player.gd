@@ -2,111 +2,78 @@ extends CharacterBody2D
 
 @onready var ponto_attack: Area2D = $pontoAttack
 @onready var ponto_attack_2: CollisionShape2D = $pontoAttack/pontoAttack2
-@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var player_hit_box_2: CollisionShape2D = $playerHitBox/playerHitBox2
 @onready var player_hit_box: Area2D = $playerHitBox
 
-# Variaveis de Movimento (Sonic-like)
-@export var max_speed = 400.0
-@export var jump_force = -800.0
-@export var acceleration = 50.0
-@export var friction = 30.0
-@export var max_lives = 3
-@export var gravity_value = 2000.0
+# Variaveis PONTO-FINAL (PRIORIDADE)
+var maxSpeed = 700
+var maxSpeedFloat = 1.5
+var accel = 1000
+var accelFloat = 1
+var decel = 500
+var decelFloat = 1
 
-# Variaveis de Ataque (do Ponto-Final)
-@export var attack_duration = 3.0
-
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var current_lives = 3
-var is_invulnerable = false
-var invulnerability_time = 2.0
-var invulnerability_timer = 0.0
-var blink_speed = 0.1
-var blink_timer = 0.0
-var is_visible_state = true
-var can_move = true
+var jumpForce = -1200
+var jumpPhysics = true
+var movePhysics = true
 var dir = 0
+var gravity = 2000
 
-func _ready():
-	set_collision_layer_value(1, true)  # Player layer
-	set_collision_mask_value(2, true)   # Plataformas
-	set_collision_mask_value(3, true)   # Inimigos patrulhadores
-	set_collision_mask_value(4, true)   # Piranhas
-	set_collision_mask_value(5, true)   # Voadores
-	
-	current_lives = max_lives
-	GameManager.set_player(self)
-	ponto_attack_2.disabled = true
+var canMove = true
+var is_invulnerable = false
 
 func _physics_process(delta):
-	# Aplicar gravidade customizada
+	# Gravidade
 	if not is_on_floor():
-		velocity.y += gravity_value * delta
+		velocity.y += gravity * delta
 	
-	# Movimento horizontal com aceleração
-	dir = Input.get_axis("move_left", "move_right")
+	dir = Input.get_axis("ui_left", "ui_right")
 	
-	if dir != 0 and can_move:
-		velocity.x = move_toward(velocity.x, dir * max_speed, acceleration * delta * 60)
+	# Movimentação (PONTO-FINAL)
+	if dir != 0 and movePhysics and canMove == true:
+		velocity.x = move_toward(velocity.x, maxSpeed * maxSpeedFloat * dir, accel * accelFloat * delta)
 	else:
-		velocity.x = move_toward(velocity.x, 0, friction * delta * 60)
+		velocity.x = move_toward(velocity.x, 0, decel * decelFloat * delta)
 	
-	# Pulo
-	if Input.is_action_just_pressed("jump") and is_on_floor() and can_move:
-		velocity.y = jump_force
+	if is_on_floor() and jumpPhysics and Input.is_action_just_pressed("ui_accept") and canMove == true:
+		velocity.y = jumpForce
 	
 	move_and_slide()
 	
 	# Verificar queda fora do mapa
-	if global_position.y > 2800:  # 4x maior
+	if global_position.y > 2800:
 		_respawn()
+
+func _ready() -> void:
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(2, true)
+	set_collision_mask_value(3, true)
 	
-	# Gerenciar invulnerabilidade
-	if is_invulnerable:
-		invulnerability_timer -= delta
-		blink_timer -= delta
-		
-		if blink_timer <= 0:
-			is_visible_state = not is_visible_state
-			blink_timer = blink_speed
-			sprite_2d.visible = is_visible_state
-		
-		if invulnerability_timer <= 0:
-			is_invulnerable = false
-			sprite_2d.visible = true
+	ponto_attack_2.disabled = true
+	GameManager.set_player(self)
 
 func _process(delta: float) -> void:
-	# Sistema de ataque (ui_down)
-	if Input.is_action_just_pressed("ui_down") and can_move:
-		can_move = false
+	# Sistema de ataque (ui_down) - PONTO-FINAL
+	if Input.is_action_just_pressed("ui_down"):
+		canMove = false
 		ponto_attack_2.disabled = false
-		await (get_tree().create_timer(attack_duration).timeout)
-		can_move = true
+		await (get_tree().create_timer(3).timeout)
+		canMove = true
 		ponto_attack_2.disabled = true
+	
+	# Invulnerabilidade - PONTO-FINAL
+	if is_invulnerable == true:
+		set_collision_mask_value(2, false)
+		await (get_tree().create_timer(2).timeout)
+		set_collision_mask_value(2, true)
+		is_invulnerable = false
 
 func _respawn():
 	global_position = Vector2(100, 300)
 	velocity = Vector2.ZERO
-	take_damage()
 
 func take_damage():
-	if is_invulnerable:
-		return
-	
-	current_lives -= 1
-	print("Player tomou dano! Vidas restantes: ", current_lives)
-	
-	if current_lives <= 0:
-		print("GAME OVER!")
-		global_position = Vector2(100, 300)
-		current_lives = max_lives
-		velocity = Vector2.ZERO
-	else:
-		# Ativar invulnerabilidade
+	print("Player tomou dano!")
+	if not is_invulnerable:
 		is_invulnerable = true
-		invulnerability_timer = invulnerability_time
-		blink_timer = blink_speed
-		velocity.y = jump_force * 0.5
-
-func get_lives():
-	return current_lives
