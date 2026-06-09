@@ -8,7 +8,7 @@ extends CharacterBody2D
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var jump_timer = 0.0
 var start_x = 0.0
-var is_below_screen = true
+var can_jump = true
 
 func _ready():
 	set_collision_layer_value(4, true)  # Piranha layer
@@ -28,9 +28,9 @@ func _physics_process(delta):
 	# SEM movimento horizontal - fica no mesmo X
 	velocity.x = 0
 	
-	# Sistema de pulo automático
+	# Sistema de pulo automático - NÃO depende de is_on_floor()
 	jump_timer -= delta
-	if jump_timer <= 0 and is_on_floor():
+	if jump_timer <= 0:
 		velocity.y = jump_force  # Pulo alto
 		jump_timer = jump_interval + randf_range(-0.2, 0.3)
 		print("Piranha pula!")
@@ -44,6 +44,7 @@ func _physics_process(delta):
 	# Reposicionar abaixo da tela se caiu muito
 	if global_position.y > screen_bottom:
 		global_position.y = screen_bottom
+		velocity.y = 0  # Reset velocity ao tocar o fundo
 	
 	# Detectar colisão com player
 	for i in get_slide_collision_count():
