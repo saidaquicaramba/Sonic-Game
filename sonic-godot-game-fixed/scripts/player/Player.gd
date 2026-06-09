@@ -1,10 +1,19 @@
 extends CharacterBody2D
 
+@onready var ponto_attack: Area2D = $pontoAttack
+@onready var ponto_attack_2: CollisionShape2D = $pontoAttack/pontoAttack2
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var player_hit_box: Area2D = $playerHitBox
+
+# Variaveis de Movimento
 @export var speed = 200.0
 @export var jump_force = -400.0
 @export var acceleration = 25.0
 @export var friction = 20.0
 @export var max_lives = 3
+
+# Variaveis de Ataque (do Ponto-Final)
+@export var attack_duration = 3.0  # Duração do ataque em segundos
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var current_lives = 3
@@ -14,6 +23,8 @@ var invulnerability_timer = 0.0
 var blink_speed = 0.1
 var blink_timer = 0.0
 var is_visible_state = true
+var can_move = true
+var dir = 0
 
 func _ready():
 	set_collision_layer_value(1, true)  # Player layer
@@ -24,22 +35,23 @@ func _ready():
 	
 	current_lives = max_lives
 	GameManager.set_player(self)
+	ponto_attack_2.disabled = true
 
 func _physics_process(delta):
 	# Aplicar gravidade
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	# Movimento horizontal
-	var input_x = Input.get_axis("move_left", "move_right")
+	# Movimento horizontal com verificação de canMove
+	dir = Input.get_axis("move_left", "move_right")
 	
-	if input_x != 0:
-		velocity.x = move_toward(velocity.x, input_x * speed, acceleration)
+	if dir != 0 and can_move:
+		velocity.x = move_toward(velocity.x, dir * speed, acceleration)
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction)
 	
 	# Pulo
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and can_move:
 		velocity.y = jump_force
 	
 	move_and_slide()
@@ -56,11 +68,31 @@ func _physics_process(delta):
 		if blink_timer <= 0:
 			is_visible_state = not is_visible_state
 			blink_timer = blink_speed
-			$ColorRect.visible = is_visible_state
+			$Sprite2D.visible = is_visible_state
 		
 		if invulnerability_timer <= 0:
 			is_invulnerable = false
-			$ColorRect.visible = true
+			$Sprite2D.visible = true
+
+func _process(delta: float) -> void:
+	# Sistema de ataque (ui_down)
+	if Input.is_action_just_pressed("ui_down"):
+		can_move = false
+		ponto_attack_2.disabled = false
+		await (get_tree().create_timer(attack_duration).timeout)
+		can_move = true
+		ponto_attack_2.disabled = true
+	
+	# Invulnerabilidade após dano
+	if is_invulnerable:
+		set_collision_mask_value(3, false)
+		set_collision_mask_value(4, false)
+		set_collision_mask_value(5, false)
+		await (get_tree().create_timer(invulnerability_time).timeout)
+		set_collision_mask_value(3, true)
+		set_collision_mask_value(4, true)
+		set_collision_mask_value(5, true)
+		is_invulnerable = false
 
 func _respawn():
 	global_position = Vector2(100, 300)
