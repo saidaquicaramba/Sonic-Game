@@ -9,47 +9,40 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction_locked = false
 
 func _ready():
-	set_collision_layer_value(3, true)  # Enemy layer
-	set_collision_mask_value(2, true)   # Plataformas
-	set_collision_mask_value(1, true)   # Player
+	set_collision_layer_value(3, true)
+	set_collision_mask_value(2, true)
+	set_collision_mask_value(1, true)
 	start_position = global_position
 
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	# Movimento contínuo
 	velocity.x = speed * direction
 	
-	# Verificar se atingiu o limite e inverter
 	if not direction_locked:
 		if abs(global_position.x - start_position.x) >= patrol_distance:
 			direction *= -1
 			direction_locked = true
 	else:
-		# Esperar até se afastar um pouco antes de permitir novo flip
 		if abs(global_position.x - start_position.x) < patrol_distance - 20:
 			direction_locked = false
 	
 	move_and_slide()
 	
-	# Detectar colisão com player
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		
 		if collider and collider.is_in_group("player"):
-			# Se player está acima do inimigo E descendo
 			var relative_y = collider.global_position.y - global_position.y
-			var is_above = relative_y < -12  # 12px de margem
+			var is_above = relative_y < -12
 			var is_descending = collider.velocity.y > 0
 			
 			if is_above and is_descending:
-				# Player pisou no inimigo
 				take_damage()
-				collider.velocity.y = -350  # Quique
+				collider.velocity.y = -350
 			else:
-				# Colisão lateral
 				if not collider.is_invulnerable:
 					collider.take_damage()
 
