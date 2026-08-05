@@ -2,6 +2,7 @@ extends Node
 
 var current_level = 1
 var player_instance = null
+var coins = 0
 
 func get_player():
 	return player_instance
@@ -20,3 +21,13 @@ func next_level():
 	else:
 		print("Jogo concluído! Voltando para a Fase 1...")
 		load_level(1)
+
+func add_coins(amount: int):
+	coins += amount
+	print("Coins: %d" % coins)
+
+func get_coins() -> int:
+	return coins
+
+func reset_coins():
+	coins = 0
