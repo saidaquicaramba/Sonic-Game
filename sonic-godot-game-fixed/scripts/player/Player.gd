@@ -23,10 +23,16 @@ var gravity = 2000
 var canMove = true
 var is_invulnerable = false
 
+# Splash effect
+var splash_scene = preload("res://scenes/effects/SplashEffect.tscn")
+var last_fall_y = 0.0
+
 func _physics_process(delta):
 	# Gravidade
 	if not is_on_floor():
 		velocity.y += gravity * delta
+	else:
+		last_fall_y = global_position.y
 	
 	dir = Input.get_axis("ui_left", "ui_right")
 	
@@ -43,6 +49,7 @@ func _physics_process(delta):
 	
 	# Verificar queda fora do mapa
 	if global_position.y > 2800:
+		_create_splash()
 		_respawn()
 
 func _ready() -> void:
@@ -52,6 +59,7 @@ func _ready() -> void:
 	
 	ponto_attack_2.disabled = true
 	GameManager.set_player(self)
+	last_fall_y = global_position.y
 
 func _process(delta: float) -> void:
 	# Sistema de ataque (ui_down) - PONTO-FINAL
@@ -72,6 +80,11 @@ func _process(delta: float) -> void:
 func _respawn():
 	global_position = Vector2(100, 300)
 	velocity = Vector2.ZERO
+
+func _create_splash():
+	var splash = splash_scene.instantiate()
+	splash.global_position = global_position
+	get_parent().add_child(splash)
 
 func take_damage():
 	print("Player tomou dano!")

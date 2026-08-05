@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" uid="uid://player" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://platform" path="res://scenes/platforms/Platform.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://boss" path="res://scenes/enemies/Boss.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://coin" path="res://scenes/collectibles/Coin.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://levelfinish" path="res://scenes/levels/LevelFinish.tscn" id="5"]
+
+[node name="BossArena" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(500, 1800)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Platform_Main" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(500, 1900)
+scale = Vector2(80, 2)
+
+[node name="Platform_Small1" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(200, 1700)
+scale = Vector2(15, 1)
+
+[node name="Platform_Small2" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(350, 1550)
+scale = Vector2(15, 1)
+
+[node name="Platform_Small3" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(500, 1400)
+scale = Vector2(15, 1)
+
+[node name="Platform_Small4" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(650, 1550)
+scale = Vector2(15, 1)
+
+[node name="Platform_Small5" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(800, 1700)
+scale = Vector2(15, 1)
+
+[node name="DamagePlatform1" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(150, 1900)
+scale = Vector2(8, 1)
+
+[node name="DamagePlatform2" parent="Platforms" instance=ExtResource("2")]
+position = Vector2(850, 1900)
+scale = Vector2(8, 1)
+
+[node name="Boss" parent="." instance=ExtResource("3")]
+position = Vector2(500, 1200)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("4")]
+position = Vector2(200, 1600)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("4")]
+position = Vector2(350, 1450)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("4")]
+position = Vector2(500, 1300)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("4")]
+position = Vector2(650, 1450)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("4")]
+position = Vector2(800, 1600)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("4")]
+position = Vector2(500, 900)
+
+[node name="LevelFinish" parent="." instance=ExtResource("5")]
+position = Vector2(500, 700)
